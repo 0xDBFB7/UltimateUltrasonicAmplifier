@@ -1,0 +1,555 @@
+ARM GAS  /tmp/ccWi8s0V.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"stm32f0xx_hal_wwdg.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.HAL_WWDG_MspInit,"ax",%progbits
+  16              		.align	1
+  17              		.weak	HAL_WWDG_MspInit
+  18              		.syntax unified
+  19              		.code	16
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	HAL_WWDG_MspInit:
+  24              	.LFB36:
+  25              		.file 1 "Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c"
+   1:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /**
+   2:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   ******************************************************************************
+   3:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @file    stm32f0xx_hal_wwdg.c
+   4:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @author  MCD Application Team
+   5:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @brief   WWDG HAL module driver.
+   6:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *          This file provides firmware functions to manage the following 
+   7:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *          functionalities of the Window Watchdog (WWDG) peripheral:
+   8:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *           + Initialization and Configuration function
+   9:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *           + IO operation functions
+  10:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   @verbatim
+  11:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   ==============================================================================
+  12:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****                       ##### WWDG specific features #####
+  13:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   ==============================================================================
+  14:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   [..]
+  15:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     Once enabled the WWDG generates a system reset on expiry of a programmed
+  16:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     time period, unless the program refreshes the counter (T[6;0] downcounter)
+  17:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     before reaching 0x3F value (i.e. a reset is generated when the counter
+  18:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     value rolls over from 0x40 to 0x3F).
+  19:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  20:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     (+) An MCU reset is also generated if the counter value is refreshed
+  21:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         before the counter has reached the refresh window value. This
+  22:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         implies that the counter must be refreshed in a limited window.
+  23:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  24:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     (+) Once enabled the WWDG cannot be disabled except by a system reset.
+  25:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  26:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     (+) WWDGRST flag in RCC_CSR register informs when a WWDG reset has 
+  27:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         occurred (check available with __HAL_RCC_GET_FLAG(RCC_FLAG_WWDGRST)).
+  28:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  29:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     (+) The WWDG downcounter input clock is derived from the APB clock divided
+  30:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         by a programmable prescaler.
+  31:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 	
+  32:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     (+) WWDG downcounter clock (Hz) = PCLK / (4096 * Prescaler)
+  33:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ARM GAS  /tmp/ccWi8s0V.s 			page 2
+
+
+  34:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     (+) WWDG timeout (ms) = (1000 * (T[5;0] + 1)) / (WWDG downcounter clock)
+  35:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         where T[5;0] are the lowest 6 bits of downcounter.
+  36:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  37:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     (+) WWDG Counter refresh is allowed between the following limits :
+  38:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         (++) min time (ms) = (1000 * (T[5;0] - Window)) / (WWDG downcounter clock)
+  39:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         (++) max time (ms) = (1000 * (T[5;0] - 0x40)) / (WWDG downcounter clock)
+  40:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  41:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     (+) Min-max timeout value @48 MHz(PCLK): ~85,3us / ~5,46 ms
+  42:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 	
+  43:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     (+) The Early Wakeup Interrupt (EWI) can be used if specific safety 
+  44:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         operations or data logging must be performed before the actual reset is
+  45:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         generated. When the downcounter reaches the value 0x40, an EWI interrupt
+  46:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         is generated and the corresponding interrupt service routine (ISR) can 
+  47:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         be used to trigger specific actions (such as communications or data 
+  48:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         logging), before resetting the device.
+  49:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         In some applications, the EWI interrupt can be used to manage a software
+  50:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         system check and/or system recovery/graceful degradation, without 
+  51:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         generating a WWDG reset. In this case, the corresponding interrupt 
+  52:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         service routine (ISR) should reload the WWDG counter to avoid the WWDG 
+  53:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         reset, then trigger the required actions.
+  54:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         Note:When the EWI interrupt cannot be served, e.g. due to a system lock 
+  55:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         in a higher priority task, the WWDG reset will eventually be generated.
+  56:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  57:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     (+) Debug mode : When the microcontroller enters debug mode (core halted),
+  58:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         the WWDG counter either continues to work normally or stops, depending 
+  59:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         on DBG_WWDG_STOP configuration bit in DBG module, accessible through
+  60:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         __HAL_DBGMCU_FREEZE_WWDG() and __HAL_DBGMCU_UNFREEZE_WWDG() macros
+  61:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  62:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****                      ##### How to use this driver #####
+  63:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   ==============================================================================
+  64:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   [..]
+  65:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     (+) Enable WWDG APB1 clock using __HAL_RCC_WWDG_CLK_ENABLE().
+  66:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  67:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     (+) Set the WWDG prescaler, refresh window, counter value and Early Wakeup 
+  68:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         Interrupt mode using using HAL_WWDG_Init() function.
+  69:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         This enables WWDG peripheral and the downcounter starts downcounting 
+  70:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         from given counter value.
+  71:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         Init function can be called again to modify all watchdog parameters, 
+  72:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         however if EWI mode has been set once, it can't be clear until next 
+  73:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         reset.
+  74:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  75:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     (+) The application program must refresh the WWDG counter at regular
+  76:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         intervals during normal operation to prevent an MCU reset using
+  77:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         HAL_WWDG_Refresh() function. This operation must occur only when
+  78:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         the counter is lower than the window value already programmed.
+  79:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  80:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     (+) if Early Wakeup Interrupt mode is enable an interrupt is generated when 
+  81:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         the counter reaches 0x40. User can add his own code in weak function 
+  82:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****         HAL_WWDG_EarlyWakeupCallback().
+  83:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  84:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****      *** WWDG HAL driver macros list ***
+  85:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****      ==================================
+  86:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****      [..]
+  87:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****        Below the list of most used macros in WWDG HAL driver.
+  88:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  89:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****       (+) __HAL_WWDG_GET_IT_SOURCE: Check the selected WWDG's interrupt source.
+  90:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****       (+) __HAL_WWDG_GET_FLAG: Get the selected WWDG's flag status.
+ARM GAS  /tmp/ccWi8s0V.s 			page 3
+
+
+  91:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****       (+) __HAL_WWDG_CLEAR_FLAG: Clear the WWDG's pending flags.
+  92:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  93:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   @endverbatim
+  94:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   ******************************************************************************
+  95:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @attention
+  96:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *
+  97:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
+  98:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *
+  99:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * Redistribution and use in source and binary forms, with or without modification,
+ 100:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * are permitted provided that the following conditions are met:
+ 101:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *   1. Redistributions of source code must retain the above copyright notice,
+ 102:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *      this list of conditions and the following disclaimer.
+ 103:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *   2. Redistributions in binary form must reproduce the above copyright notice,
+ 104:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *      this list of conditions and the following disclaimer in the documentation
+ 105:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *      and/or other materials provided with the distribution.
+ 106:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *   3. Neither the name of STMicroelectronics nor the names of its contributors
+ 107:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *      may be used to endorse or promote products derived from this software
+ 108:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *      without specific prior written permission.
+ 109:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *
+ 110:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ 111:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ 112:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ 113:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ 114:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ 115:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ 116:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ 117:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ 118:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ 119:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 120:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *
+ 121:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   ******************************************************************************
+ 122:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   */
+ 123:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 124:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /* Includes ------------------------------------------------------------------*/
+ 125:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** #include "stm32f0xx_hal.h"
+ 126:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 127:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /** @addtogroup STM32F0xx_HAL_Driver
+ 128:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @{
+ 129:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   */
+ 130:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 131:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** #ifdef HAL_WWDG_MODULE_ENABLED
+ 132:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /** @defgroup WWDG WWDG
+ 133:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @brief WWDG HAL module driver.
+ 134:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @{
+ 135:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   */
+ 136:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 137:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /* Private typedef -----------------------------------------------------------*/
+ 138:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /* Private define ------------------------------------------------------------*/
+ 139:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /* Private macro -------------------------------------------------------------*/
+ 140:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /* Private variables ---------------------------------------------------------*/
+ 141:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /* Private function prototypes -----------------------------------------------*/
+ 142:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /* Exported functions --------------------------------------------------------*/
+ 143:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 144:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /** @defgroup WWDG_Exported_Functions WWDG Exported Functions
+ 145:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @{
+ 146:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   */
+ 147:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ARM GAS  /tmp/ccWi8s0V.s 			page 4
+
+
+ 148:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /** @defgroup WWDG_Exported_Functions_Group1 Initialization and Configuration functions
+ 149:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****  *  @brief    Initialization and Configuration functions.
+ 150:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****  *
+ 151:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** @verbatim
+ 152:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   ==============================================================================
+ 153:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****           ##### Initialization and Configuration functions #####
+ 154:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   ==============================================================================
+ 155:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   [..]  
+ 156:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     This section provides functions allowing to:
+ 157:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****       (+) Initialize and start the WWDG according to the specified parameters
+ 158:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****           in the WWDG_InitTypeDef of associated handle.
+ 159:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****       (+) Initialize the WWDG MSP.
+ 160:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 161:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** @endverbatim
+ 162:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @{
+ 163:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   */
+ 164:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 165:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /**
+ 166:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @brief  Initialize the WWDG according to the specified.
+ 167:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *         parameters in the WWDG_InitTypeDef of  associated handle.
+ 168:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @param  hwwdg  pointer to a WWDG_HandleTypeDef structure that contains
+ 169:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *                the configuration information for the specified WWDG module.
+ 170:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @retval HAL status
+ 171:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   */
+ 172:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** HAL_StatusTypeDef HAL_WWDG_Init(WWDG_HandleTypeDef *hwwdg)
+ 173:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** {
+ 174:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   /* Check the WWDG handle allocation */
+ 175:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   if(hwwdg == NULL)
+ 176:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   {
+ 177:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     return HAL_ERROR;
+ 178:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   }
+ 179:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 180:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   /* Check the parameters */
+ 181:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   assert_param(IS_WWDG_ALL_INSTANCE(hwwdg->Instance));
+ 182:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   assert_param(IS_WWDG_PRESCALER(hwwdg->Init.Prescaler));
+ 183:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   assert_param(IS_WWDG_WINDOW(hwwdg->Init.Window));
+ 184:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   assert_param(IS_WWDG_COUNTER(hwwdg->Init.Counter));
+ 185:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   assert_param(IS_WWDG_EWI_MODE(hwwdg->Init.EWIMode));
+ 186:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 187:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   /* Init the low level hardware */
+ 188:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   HAL_WWDG_MspInit(hwwdg);
+ 189:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 190:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   /* Set WWDG Counter */
+ 191:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   WRITE_REG(hwwdg->Instance->CR, (WWDG_CR_WDGA | hwwdg->Init.Counter));
+ 192:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 193:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   /* Set WWDG Prescaler and Window */
+ 194:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   WRITE_REG(hwwdg->Instance->CFR, (hwwdg->Init.EWIMode | hwwdg->Init.Prescaler | hwwdg->Init.Window
+ 195:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 196:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   /* Return function status */
+ 197:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   return HAL_OK;
+ 198:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** }
+ 199:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 200:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 201:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /**
+ 202:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @brief  Initialize the WWDG MSP.
+ 203:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @param  hwwdg  pointer to a WWDG_HandleTypeDef structure that contains
+ 204:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *                the configuration information for the specified WWDG module.
+ARM GAS  /tmp/ccWi8s0V.s 			page 5
+
+
+ 205:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @note   When rewriting this function in user file, mechanism may be added
+ 206:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *         to avoid multiple initialize when HAL_WWDG_Init function is called
+ 207:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *         again to change parameters.
+ 208:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @retval None
+ 209:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   */
+ 210:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** __weak void HAL_WWDG_MspInit(WWDG_HandleTypeDef *hwwdg)
+ 211:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** {
+  26              		.loc 1 211 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  31              	.LVL0:
+ 212:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   /* Prevent unused argument(s) compilation warning */
+ 213:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   UNUSED(hwwdg);
+ 214:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 215:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   /* NOTE: This function should not be modified, when the callback is needed,
+ 216:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****            the HAL_WWDG_MspInit could be implemented in the user file
+ 217:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****    */
+ 218:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** }
+  32              		.loc 1 218 0
+  33              		@ sp needed
+  34 0000 7047     		bx	lr
+  35              		.cfi_endproc
+  36              	.LFE36:
+  38              		.section	.text.HAL_WWDG_Init,"ax",%progbits
+  39              		.align	1
+  40              		.global	HAL_WWDG_Init
+  41              		.syntax unified
+  42              		.code	16
+  43              		.thumb_func
+  44              		.fpu softvfp
+  46              	HAL_WWDG_Init:
+  47              	.LFB35:
+ 173:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   /* Check the WWDG handle allocation */
+  48              		.loc 1 173 0
+  49              		.cfi_startproc
+  50              		@ args = 0, pretend = 0, frame = 0
+  51              		@ frame_needed = 0, uses_anonymous_args = 0
+  52              	.LVL1:
+  53 0000 10B5     		push	{r4, lr}
+  54              	.LCFI0:
+  55              		.cfi_def_cfa_offset 8
+  56              		.cfi_offset 4, -8
+  57              		.cfi_offset 14, -4
+  58 0002 041E     		subs	r4, r0, #0
+ 175:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   {
+  59              		.loc 1 175 0
+  60 0004 0FD0     		beq	.L4
+ 188:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  61              		.loc 1 188 0
+  62 0006 FFF7FEFF 		bl	HAL_WWDG_MspInit
+  63              	.LVL2:
+ 191:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  64              		.loc 1 191 0
+  65 000a 2268     		ldr	r2, [r4]
+  66 000c 8023     		movs	r3, #128
+ARM GAS  /tmp/ccWi8s0V.s 			page 6
+
+
+  67 000e E168     		ldr	r1, [r4, #12]
+  68 0010 0B43     		orrs	r3, r1
+  69 0012 1360     		str	r3, [r2]
+ 194:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  70              		.loc 1 194 0
+  71 0014 2268     		ldr	r2, [r4]
+  72 0016 2369     		ldr	r3, [r4, #16]
+  73 0018 6168     		ldr	r1, [r4, #4]
+  74 001a 0B43     		orrs	r3, r1
+  75 001c A168     		ldr	r1, [r4, #8]
+  76 001e 0B43     		orrs	r3, r1
+  77 0020 5360     		str	r3, [r2, #4]
+ 197:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** }
+  78              		.loc 1 197 0
+  79 0022 0020     		movs	r0, #0
+  80              	.L3:
+ 198:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+  81              		.loc 1 198 0
+  82              		@ sp needed
+  83              	.LVL3:
+  84 0024 10BD     		pop	{r4, pc}
+  85              	.LVL4:
+  86              	.L4:
+ 177:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   }
+  87              		.loc 1 177 0
+  88 0026 0120     		movs	r0, #1
+  89              	.LVL5:
+  90 0028 FCE7     		b	.L3
+  91              		.cfi_endproc
+  92              	.LFE35:
+  94              		.section	.text.HAL_WWDG_Refresh,"ax",%progbits
+  95              		.align	1
+  96              		.global	HAL_WWDG_Refresh
+  97              		.syntax unified
+  98              		.code	16
+  99              		.thumb_func
+ 100              		.fpu softvfp
+ 102              	HAL_WWDG_Refresh:
+ 103              	.LFB37:
+ 219:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 220:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /**
+ 221:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @}
+ 222:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   */
+ 223:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 224:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /** @defgroup WWDG_Exported_Functions_Group2 IO operation functions
+ 225:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****  *  @brief    IO operation functions 
+ 226:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****  *
+ 227:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** @verbatim
+ 228:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   ==============================================================================
+ 229:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****                       ##### IO operation functions #####
+ 230:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   ==============================================================================  
+ 231:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   [..]
+ 232:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     This section provides functions allowing to:
+ 233:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     (+) Refresh the WWDG.
+ 234:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     (+) Handle WWDG interrupt request and associated function callback.
+ 235:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 236:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** @endverbatim
+ARM GAS  /tmp/ccWi8s0V.s 			page 7
+
+
+ 237:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @{
+ 238:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   */
+ 239:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 240:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /**
+ 241:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @brief  Refresh the WWDG.
+ 242:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @param  hwwdg  pointer to a WWDG_HandleTypeDef structure that contains
+ 243:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *                the configuration information for the specified WWDG module.
+ 244:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @retval HAL status
+ 245:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   */
+ 246:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** HAL_StatusTypeDef HAL_WWDG_Refresh(WWDG_HandleTypeDef *hwwdg)
+ 247:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** {
+ 104              		.loc 1 247 0
+ 105              		.cfi_startproc
+ 106              		@ args = 0, pretend = 0, frame = 0
+ 107              		@ frame_needed = 0, uses_anonymous_args = 0
+ 108              		@ link register save eliminated.
+ 109              	.LVL6:
+ 248:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   /* Write to WWDG CR the WWDG Counter value to refresh with */
+ 249:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   WRITE_REG(hwwdg->Instance->CR, (hwwdg->Init.Counter));
+ 110              		.loc 1 249 0
+ 111 0000 0368     		ldr	r3, [r0]
+ 112 0002 C268     		ldr	r2, [r0, #12]
+ 113 0004 1A60     		str	r2, [r3]
+ 250:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 251:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   /* Return function status */
+ 252:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   return HAL_OK;
+ 253:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** }
+ 114              		.loc 1 253 0
+ 115 0006 0020     		movs	r0, #0
+ 116              	.LVL7:
+ 117              		@ sp needed
+ 118 0008 7047     		bx	lr
+ 119              		.cfi_endproc
+ 120              	.LFE37:
+ 122              		.section	.text.HAL_WWDG_EarlyWakeupCallback,"ax",%progbits
+ 123              		.align	1
+ 124              		.weak	HAL_WWDG_EarlyWakeupCallback
+ 125              		.syntax unified
+ 126              		.code	16
+ 127              		.thumb_func
+ 128              		.fpu softvfp
+ 130              	HAL_WWDG_EarlyWakeupCallback:
+ 131              	.LFB39:
+ 254:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 255:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /**
+ 256:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @brief  Handle WWDG interrupt request.
+ 257:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @note   The Early Wakeup Interrupt (EWI) can be used if specific safety operations
+ 258:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *         or data logging must be performed before the actual reset is generated.
+ 259:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *         The EWI interrupt is enabled by calling HAL_WWDG_Init function with 
+ 260:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *         EWIMode set to WWDG_EWI_ENABLE.
+ 261:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *         When the downcounter reaches the value 0x40, and EWI interrupt is
+ 262:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *         generated and the corresponding Interrupt Service Routine (ISR) can
+ 263:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *         be used to trigger specific actions (such as communications or data
+ 264:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *         logging), before resetting the device.
+ 265:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @param  hwwdg  pointer to a WWDG_HandleTypeDef structure that contains
+ 266:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *                the configuration information for the specified WWDG module.
+ 267:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @retval None
+ARM GAS  /tmp/ccWi8s0V.s 			page 8
+
+
+ 268:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   */
+ 269:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** void HAL_WWDG_IRQHandler(WWDG_HandleTypeDef *hwwdg)
+ 270:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** {
+ 271:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   /* Check if Early Wakeup Interrupt is enable */
+ 272:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   if(__HAL_WWDG_GET_IT_SOURCE(hwwdg, WWDG_IT_EWI) != RESET)
+ 273:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   {
+ 274:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     /* Check if WWDG Early Wakeup Interrupt occurred */
+ 275:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     if(__HAL_WWDG_GET_FLAG(hwwdg, WWDG_FLAG_EWIF) != RESET)
+ 276:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     {
+ 277:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****       /* Clear the WWDG Early Wakeup flag */
+ 278:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****       __HAL_WWDG_CLEAR_FLAG(hwwdg, WWDG_FLAG_EWIF);
+ 279:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 280:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****       /* Early Wakeup callback */ 
+ 281:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****       HAL_WWDG_EarlyWakeupCallback(hwwdg);
+ 282:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     }
+ 283:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   }
+ 284:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** }
+ 285:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 286:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 287:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** /**
+ 288:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @brief  WWDG Early Wakeup callback.
+ 289:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @param  hwwdg  pointer to a WWDG_HandleTypeDef structure that contains
+ 290:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   *                the configuration information for the specified WWDG module.
+ 291:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   * @retval None
+ 292:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   */
+ 293:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** __weak void HAL_WWDG_EarlyWakeupCallback(WWDG_HandleTypeDef* hwwdg)
+ 294:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** {
+ 132              		.loc 1 294 0
+ 133              		.cfi_startproc
+ 134              		@ args = 0, pretend = 0, frame = 0
+ 135              		@ frame_needed = 0, uses_anonymous_args = 0
+ 136              		@ link register save eliminated.
+ 137              	.LVL8:
+ 295:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   /* Prevent unused argument(s) compilation warning */
+ 296:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   UNUSED(hwwdg);
+ 297:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 298:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   /* NOTE: This function should not be modified, when the callback is needed,
+ 299:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****            the HAL_WWDG_EarlyWakeupCallback could be implemented in the user file
+ 300:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****    */
+ 301:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** }
+ 138              		.loc 1 301 0
+ 139              		@ sp needed
+ 140 0000 7047     		bx	lr
+ 141              		.cfi_endproc
+ 142              	.LFE39:
+ 144              		.section	.text.HAL_WWDG_IRQHandler,"ax",%progbits
+ 145              		.align	1
+ 146              		.global	HAL_WWDG_IRQHandler
+ 147              		.syntax unified
+ 148              		.code	16
+ 149              		.thumb_func
+ 150              		.fpu softvfp
+ 152              	HAL_WWDG_IRQHandler:
+ 153              	.LFB38:
+ 270:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   /* Check if Early Wakeup Interrupt is enable */
+ 154              		.loc 1 270 0
+ 155              		.cfi_startproc
+ARM GAS  /tmp/ccWi8s0V.s 			page 9
+
+
+ 156              		@ args = 0, pretend = 0, frame = 0
+ 157              		@ frame_needed = 0, uses_anonymous_args = 0
+ 158              	.LVL9:
+ 159 0000 10B5     		push	{r4, lr}
+ 160              	.LCFI1:
+ 161              		.cfi_def_cfa_offset 8
+ 162              		.cfi_offset 4, -8
+ 163              		.cfi_offset 14, -4
+ 272:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****   {
+ 164              		.loc 1 272 0
+ 165 0002 0368     		ldr	r3, [r0]
+ 166 0004 5A68     		ldr	r2, [r3, #4]
+ 167 0006 9205     		lsls	r2, r2, #22
+ 168 0008 02D5     		bpl	.L7
+ 275:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     {
+ 169              		.loc 1 275 0
+ 170 000a 9A68     		ldr	r2, [r3, #8]
+ 171 000c D207     		lsls	r2, r2, #31
+ 172 000e 00D4     		bmi	.L9
+ 173              	.LVL10:
+ 174              	.L7:
+ 284:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 175              		.loc 1 284 0
+ 176              		@ sp needed
+ 177 0010 10BD     		pop	{r4, pc}
+ 178              	.LVL11:
+ 179              	.L9:
+ 278:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 180              		.loc 1 278 0
+ 181 0012 0222     		movs	r2, #2
+ 182 0014 5242     		rsbs	r2, r2, #0
+ 183 0016 9A60     		str	r2, [r3, #8]
+ 281:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c ****     }
+ 184              		.loc 1 281 0
+ 185 0018 FFF7FEFF 		bl	HAL_WWDG_EarlyWakeupCallback
+ 186              	.LVL12:
+ 284:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c **** 
+ 187              		.loc 1 284 0
+ 188 001c F8E7     		b	.L7
+ 189              		.cfi_endproc
+ 190              	.LFE38:
+ 192              		.text
+ 193              	.Letext0:
+ 194              		.file 2 "/home/arthurdent/Programs/gcc-arm-none-eabi-6-2017-q1-update/arm-none-eabi/include/machin
+ 195              		.file 3 "/home/arthurdent/Programs/gcc-arm-none-eabi-6-2017-q1-update/arm-none-eabi/include/sys/_s
+ 196              		.file 4 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 197              		.file 5 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f030x6.h"
+ 198              		.file 6 "/home/arthurdent/Programs/gcc-arm-none-eabi-6-2017-q1-update/arm-none-eabi/include/sys/lo
+ 199              		.file 7 "/home/arthurdent/Programs/gcc-arm-none-eabi-6-2017-q1-update/arm-none-eabi/include/sys/_t
+ 200              		.file 8 "/home/arthurdent/Programs/gcc-arm-none-eabi-6-2017-q1-update/lib/gcc/arm-none-eabi/6.3.1/
+ 201              		.file 9 "/home/arthurdent/Programs/gcc-arm-none-eabi-6-2017-q1-update/arm-none-eabi/include/sys/re
+ 202              		.file 10 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f0xx.h"
+ 203              		.file 11 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_def.h"
+ 204              		.file 12 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_wwdg.h"
+ARM GAS  /tmp/ccWi8s0V.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f0xx_hal_wwdg.c
+     /tmp/ccWi8s0V.s:16     .text.HAL_WWDG_MspInit:0000000000000000 $t
+     /tmp/ccWi8s0V.s:23     .text.HAL_WWDG_MspInit:0000000000000000 HAL_WWDG_MspInit
+     /tmp/ccWi8s0V.s:39     .text.HAL_WWDG_Init:0000000000000000 $t
+     /tmp/ccWi8s0V.s:46     .text.HAL_WWDG_Init:0000000000000000 HAL_WWDG_Init
+     /tmp/ccWi8s0V.s:95     .text.HAL_WWDG_Refresh:0000000000000000 $t
+     /tmp/ccWi8s0V.s:102    .text.HAL_WWDG_Refresh:0000000000000000 HAL_WWDG_Refresh
+     /tmp/ccWi8s0V.s:123    .text.HAL_WWDG_EarlyWakeupCallback:0000000000000000 $t
+     /tmp/ccWi8s0V.s:130    .text.HAL_WWDG_EarlyWakeupCallback:0000000000000000 HAL_WWDG_EarlyWakeupCallback
+     /tmp/ccWi8s0V.s:145    .text.HAL_WWDG_IRQHandler:0000000000000000 $t
+     /tmp/ccWi8s0V.s:152    .text.HAL_WWDG_IRQHandler:0000000000000000 HAL_WWDG_IRQHandler
+                     .debug_frame:0000000000000010 $d
+
+NO UNDEFINED SYMBOLS
